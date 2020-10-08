@@ -1,54 +1,34 @@
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
-        // write your code here
-
-        Scanner scanner = new Scanner(System.in);
-
-        ArrayList<Integer> arrayList = readArrayList(scanner);
-        int number = scanner.nextInt();
-
-        int minValue = minDifference(arrayList, number);
-        ArrayList<Integer> output = outputArray(arrayList, number, minValue);
-
-        System.out.println(output.toString().replaceAll("\\[|\\]", "").replaceAll("\\,", ""));
+        boolean valid;
 
 
-    }
+        do {
+            Scanner input = new Scanner(System.in);
+            System.out.println("Please provide your password:");
+            String password = input.nextLine();
+            passwordValidation checkPass = new passwordValidation();
 
-    private static ArrayList<Integer> readArrayList(Scanner scanner) {
-        return Arrays
-                .stream(scanner.nextLine().split("\\s+"))
-                .map(Integer::parseInt)
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
+            checkPass.check4Length(password);
 
-    private static int minDifference(ArrayList<Integer> arrayList, int number) {
 
-        int min;
-        ArrayList<Integer> minArrayList = new ArrayList<>();
+            checkPass.check4Number(password);
 
-        for (Integer integer : arrayList) {
-            minArrayList.add(Math.abs(integer - number));
-        }
-        min = minArrayList.get(minArrayList.indexOf(Collections.min(minArrayList)));
+            checkPass.check4Uppercase(password);
 
-        return min;
-    }
+            checkPass.check4Specialchar(password);
 
-    private static ArrayList<Integer> outputArray(ArrayList<Integer> arrayList, int number, int minValue) {
-        ArrayList<Integer> outputArrayList = new ArrayList<>();
+            valid = checkPass.valid1 & checkPass.valid2 & checkPass.valid3 & checkPass.valid4;
 
-        for (int i = 0; i < arrayList.size(); i++) {
-            if (Math.abs(arrayList.get(i) - number) == minValue) {
-                outputArrayList.add(arrayList.get(i));
+            if (valid == false) {
+                System.out.println("Wrong password!");
             }
-        }
-        Collections.sort(outputArrayList);
 
-        return outputArrayList;
+
+        } while (!valid);
+
     }
 }
-
